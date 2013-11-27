@@ -7,8 +7,6 @@ var auth = new OAuth2('bookmarks', {
 auth.authorize(function(){
     console.log('lol');
     auth.getAccessToken();
-    auth.updateLocalStorage();
-    alert('ok');
 
 
     
