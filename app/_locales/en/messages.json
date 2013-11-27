@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "bookmarks_chrome_extension",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "Chrome extension to add bookmarks easily",
+    "description": "The description of the application"
+  }
+}
