@@ -24,6 +24,16 @@ module.exports = function (grunt) {
     };
 
     grunt.initConfig({
+        less: {
+            development: {
+                options: {
+                    //paths: ["../client/public/less"]
+                },
+                files: {
+                    "<%= yeoman.app %>/styles/main.css" : "<%= yeoman.app %>/less/main.less"
+                }
+            }
+        },
         yeoman: yeomanConfig,
         watch: {
             options: {
@@ -40,6 +50,13 @@ module.exports = function (grunt) {
             compass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
                 tasks: ['compass:server']
+            },
+            less: {
+                files: "<%= yeoman.app %>/less/*.less",
+                tasks: ["less"],
+                options: {
+                    interrupt: true
+                }
             }
         },
         connect: {
@@ -300,4 +317,5 @@ module.exports = function (grunt) {
         'test',
         'build'
     ]);
+
 };

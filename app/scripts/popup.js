@@ -1,5 +1,4 @@
-var popUp = {
-    auth: new OAuth2('bookmarks', {
+var popUp = { auth: new OAuth2('bookmarks', {
         client_id: 'chrome_321',
         client_secret: 'az97j24ho24cvh24xq671345ef5uop54',
     }),
@@ -79,7 +78,7 @@ var popUp = {
                         if(parsed[i].name == "__default"){
                             parsed[i].name = "Favorite";
                         }
-                        html += '<li class="category" data-id="'+parsed[i].id+'">'+parsed[i].name+'</li>';
+                        html += '<li class="category pointer" data-id="'+parsed[i].id+'">'+parsed[i].name+'</li>';
                     };
                     document.querySelector('#categories-list').innerHTML = html;
                     

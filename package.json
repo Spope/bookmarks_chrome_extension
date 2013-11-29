@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {
+    "less": "*",
+    "grunt-contrib-less": "*",
     "grunt": "~0.4.1",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-concat": "~0.3.0",
