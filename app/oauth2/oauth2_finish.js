@@ -23,6 +23,12 @@ if (index > -1) {
   url = url.substring(0, index);
 }
 
+// In cases where the URL contains a # character directly without having a ? char - example http://a.com/bc#code=xys
+index = url.indexOf('#');
+if (index > -1) {
+  url = url.substring(0, index);
+}
+
 // Derive adapter name from URI and then finish the process.
 var adapterName = OAuth2.lookupAdapterName(url);
 var finisher = new OAuth2(adapterName, OAuth2.FINISH);

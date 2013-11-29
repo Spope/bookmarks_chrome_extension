@@ -11,7 +11,8 @@
         }
     ],
     "permissions": [
-        "http://devserver2.com:1337/oauth/token"
+        "http://devserver2.com:1337/oauth/token",
+        "tabs"
     ],
     "web_accessible_resources" : [
         "oauth2/oauth2.html"

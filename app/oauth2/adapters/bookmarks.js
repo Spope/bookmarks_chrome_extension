@@ -64,9 +64,8 @@ OAuth2.adapter('bookmarks', {
    * refreshToken {String} and expiresIn {Int}
    */
   parseAccessToken: function(response) {
-        console.log(response);
     return {
-      accessToken: response.access_token,
+      accessToken: JSON.parse(response).access_token,
       expiresIn: Number.MAX_VALUE
     };
   }

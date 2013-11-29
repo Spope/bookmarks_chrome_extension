@@ -4,15 +4,33 @@
         <link href="styles/main.css" rel="stylesheet">
         <!-- build:js scripts/popup.js -->
         <script src="/oauth2/oauth2.js"></script>
-        <script src="scripts/popup.js"></script>
+        
         <!-- endbuild -->
     </head>
     <body>
-        
-        Allo
+        <div id="content">
+            <p id="loader">Loading...</p>
+            <p id="user"></p>
 
+            <div id="categories">
+                <ul id="categories-list">
+                    
+                </ul>
+            </div>
 
+            <div id="name">
+                <input type="text" id="input-name" />
+                <button type="button" id="btn-add">Ok</button>
+                <a class="previous">Previous</a>
+            </div>
 
-        <!-- CHROME EXTENSION POPUP -->
+            <div id="finished">
+                Done !
+            </div>
+
+            <div id="error"></div>
+        </div>
+
+        <script src="scripts/popup.js"></script>
     </body>
 </html>
