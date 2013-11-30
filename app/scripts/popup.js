@@ -1,12 +1,14 @@
-var popUp = { auth: new OAuth2('bookmarks', {
-        client_id: 'chrome_321',
+var popUp = {
+    auth: new OAuth2('bookmarks', {
+        client_id: 'chrome_extension',
         client_secret: 'az97j24ho24cvh24xq671345ef5uop54',
     }),
-    server: "http://devserver2.com:1337",
+    server: "http://bookmarks.spope.fr",
     user: null,
     bookmark: {},
 
     init: function(){
+        this.viewManager.set(1);
         _this = this;
         //Get Oauth token
         this.auth.authorize(function(){
@@ -14,7 +16,7 @@ var popUp = { auth: new OAuth2('bookmarks', {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function(event) {
                 if (xhr.readyState == 4) {
-                    
+
                     if(xhr.status == 200) {
                         // Great success: parse response with JSON
                         _this.user = JSON.parse(xhr.responseText);
@@ -66,7 +68,7 @@ var popUp = { auth: new OAuth2('bookmarks', {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(event) {
             if (xhr.readyState == 4) {
-                
+
                 if(xhr.status == 200) {
 
                     _this.viewManager.set(2);
@@ -81,7 +83,7 @@ var popUp = { auth: new OAuth2('bookmarks', {
                         html += '<li class="category pointer" data-id="'+parsed[i].id+'">'+parsed[i].name+'</li>';
                     };
                     document.querySelector('#categories-list').innerHTML = html;
-                    
+
                     var list = document.querySelectorAll('.category');
 
                     for(var i=0; i< list.length; i++){
@@ -116,7 +118,7 @@ var popUp = { auth: new OAuth2('bookmarks', {
         this.viewManager.set(3);
         document.querySelector("#input-name").placeholder = this.bookmark.url.match(/:\/\/(.[^/]+)/)[1].replace('www.', '');
         document.querySelector("#input-name").focus();
-        
+
     },
 
     addBookmark: function(){
@@ -132,7 +134,7 @@ var popUp = { auth: new OAuth2('bookmarks', {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(event) {
             if (xhr.readyState == 4) {
-                
+
                 if(xhr.status == 200) {
                     // Great success: parse response with JSON
                     var parsed = JSON.parse(xhr.responseText);
@@ -140,11 +142,11 @@ var popUp = { auth: new OAuth2('bookmarks', {
                     if(parsed.id) {
                         _this.viewManager.set(4);
                     }
-                    
+
                     return;
 
                 } else {
-                // Request failure: something bad happened
+                    document.querySelector("#error").innerHTML = "Can't add this bookmark";
                 }
             }
         };
@@ -189,6 +191,5 @@ var popUp = { auth: new OAuth2('bookmarks', {
         }
     }
 };
-
 
 popUp.init();

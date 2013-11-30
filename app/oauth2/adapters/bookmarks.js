@@ -3,7 +3,7 @@ OAuth2.adapter('bookmarks', {
    * @return {URL} URL to the page that returns the authorization code
    */
   authorizationCodeURL: function(config) {
-    return ('http://devserver2.com:1337/dialog/authorize?' +
+    return ('http://bookmarks.spope.fr/dialog/authorize?' +
       'client_id={{CLIENT_ID}}&' +
       'response_type=code&' +
       //'scope={{API_SCOPE}}&' +
@@ -18,7 +18,7 @@ OAuth2.adapter('bookmarks', {
    * script into
    */
   redirectURL: function(config) {
-    return 'http://devserver2.com:1337/dialog/authorize/callback';
+    return 'http://bookmarks.spope.fr/dialog/authorize/callback';
   },
 
   /**
@@ -36,7 +36,7 @@ OAuth2.adapter('bookmarks', {
    * @return {URL} URL to the access token providing endpoint
    */
   accessTokenURL: function() {
-    return 'http://devserver2.com:1337/oauth/token';
+    return 'http://bookmarks.spope.fr/oauth/token';
   },
 
   /**

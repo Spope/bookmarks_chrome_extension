@@ -5,13 +5,13 @@
     "description": "Chrome extension for Bookmarks",
     "content_scripts": [
         {
-            "matches": ["http://devserver2.com:1337/dialog/authorize/callback*"],
+            "matches": ["http://bookmarks.spope.fr/dialog/authorize/callback*"],
             "js": ["oauth2/oauth2_inject.js"],
             "run_at": "document_start"
         }
     ],
     "permissions": [
-        "http://devserver2.com:1337/oauth/token",
+        "http://bookmarks.spope.fr/oauth/token",
         "tabs"
     ],
     "web_accessible_resources" : [
