@@ -12,28 +12,19 @@ var popUp = {
         _this = this;
         //Get Oauth token
         this.auth.authorize(function(){
-            //Loading user categories
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function(event) {
-                if (xhr.readyState == 4) {
 
-                    if(xhr.status == 200) {
-                        // Great success: parse response with JSON
-                        _this.user = JSON.parse(xhr.responseText);
+            var options = {
+                url: _this.server+'/api/islogged',
+                error: "Can't retrieve your account parameters",
+                callback: function(text){
+                    _this.user = JSON.parse(text);
 
-                        document.querySelector('#user').innerHTML = "Hi "+_this.user.username;
-                        _this.refreshCategories();
-
-                        return;
-                    } else {
-                        document.querySelector("#error").innerHTML = "Can't retrieve your account parameters";
-                    }
+                    document.querySelector('#hello').innerHTML = "Hi "+_this.user.username;
+                    _this.refreshCategories();
                 }
-            };
-            xhr.open('GET', _this.server+'/api/islogged?access_token='+_this.auth.getAccessToken(), true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            //xhr.setRequestHeader('Authorization', 'OAuth ' + auth.getAccessToken());
-            xhr.send();
+            }
+            _this.xhr(options);
+
         });
 
         /////////////////////////////
@@ -47,6 +38,12 @@ var popUp = {
                 _this.viewManager.set(_this.viewManager.getCurrentState() -1);
             })
         }
+
+        //logout button
+        document.querySelector("#btn-logout").addEventListener('click', function(e){
+            _this.auth.clearAccessToken();
+            window.close();
+        });
 
         //When hitting 'enter', submit the new bookmark
         document.querySelector("#name").addEventListener('keydown', function(e){
@@ -65,43 +62,32 @@ var popUp = {
 
     refreshCategories: function() {
         _this = this;
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function(event) {
-            if (xhr.readyState == 4) {
 
-                if(xhr.status == 200) {
+        var options = {
+            url: _this.server+'/api/user/'+_this.user.id+'/categories',
+            error: "Can't retrieve your categories",
+            callback: function(text){
+                _this.viewManager.set(2);
 
-                    _this.viewManager.set(2);
-
-                    // Great success: parse response with JSON
-                    var parsed = JSON.parse(xhr.responseText);
-                    var html = '';
-                    for(i in parsed) {
-                        if(parsed[i].name == "__default"){
-                            parsed[i].name = "Favorite";
-                        }
-                        html += '<li class="category pointer" data-id="'+parsed[i].id+'">'+parsed[i].name+'</li>';
-                    };
-                    document.querySelector('#categories-list').innerHTML = html;
-
-                    var list = document.querySelectorAll('.category');
-
-                    for(var i=0; i< list.length; i++){
-                        list[i].addEventListener('click', _this.clicked);
+                // Great success: parse response with JSON
+                var parsed = JSON.parse(text);
+                var html = '';
+                for(i in parsed) {
+                    if(parsed[i].name == "__default"){
+                        parsed[i].name = "Favorite";
                     }
+                    html += '<li class="category pointer" data-id="'+parsed[i].id+'">'+parsed[i].name+'</li>';
+                };
+                document.querySelector('#categories-list').innerHTML = html;
 
-                    return;
+                var list = document.querySelectorAll('.category');
 
-                } else {
-                    document.querySelector("#error").innerHTML = "Can't retrieve your categories";
+                for(var i=0; i< list.length; i++){
+                    list[i].addEventListener('click', _this.clicked);
                 }
             }
-        };
-
-        xhr.open('GET', _this.server+'/api/user/'+_this+user.id+'/load?access_token='+_this.auth.getAccessToken(), true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        //xhr.setRequestHeader('Authorization', 'OAuth ' + auth.getAccessToken());
-        xhr.send();
+        }
+        _this.xhr(options);
     },
 
     clicked: function(e) {
@@ -118,7 +104,6 @@ var popUp = {
         this.viewManager.set(3);
         document.querySelector("#input-name").placeholder = this.bookmark.url.match(/:\/\/(.[^/]+)/)[1].replace('www.', '');
         document.querySelector("#input-name").focus();
-
     },
 
     addBookmark: function(){
@@ -131,30 +116,49 @@ var popUp = {
         }
         params = params.substr(0, params.length-1);
 
+        var options = {
+            method: "POST",
+            url: _this.server+'/api/user/'+_this.user.id+'/bookmark',
+            body: params,
+            error: "Can't add this bookmark",
+            requestHeader: "application/x-www-form-urlencoded",
+            callback: function(text){
+                var parsed = JSON.parse(text);
+
+                if(parsed.id) {
+                    _this.viewManager.set(4);
+                }
+            }
+        }
+        this.xhr(options);
+    },
+
+    xhr: function(options){
+
+        var _this = this;
+
+        options.body = options.body || "";
+        options.method = options.method || "GET";
+        options.requestHeader = options.requestHeader || "application/json";
+        if(!options.url)throw Error('XHR need a URL');
+
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function(event) {
             if (xhr.readyState == 4) {
 
                 if(xhr.status == 200) {
-                    // Great success: parse response with JSON
-                    var parsed = JSON.parse(xhr.responseText);
-
-                    if(parsed.id) {
-                        _this.viewManager.set(4);
+                    if(options.callback){
+                        options.callback(xhr.responseText);
                     }
-
                     return;
-
                 } else {
-                    document.querySelector("#error").innerHTML = "Can't add this bookmark";
+                    document.querySelector("#error").innerHTML = options.error ||"Error on xhr";
                 }
             }
         };
-
-        xhr.open('POST', _this.server+'/api/user/'+_this+user.id+'/bookmark?access_token='+_this.auth.getAccessToken(), true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        //xhr.setRequestHeader('Authorization', 'OAuth ' + auth.getAccessToken());
-        xhr.send(params);
+        xhr.open(options.method, options.url+'?access_token='+_this.auth.getAccessToken(), true);
+        xhr.setRequestHeader('Content-Type', options.requestHeader);
+        xhr.send(options.body);
     },
 
 
