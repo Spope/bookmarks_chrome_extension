@@ -179,7 +179,7 @@ var popUp = {
                 document.querySelector(this.states[i]).style.opacity = 0;
             }
 
-            document.querySelector(this.states[state]).style.display ='"block';
+            document.querySelector(this.states[state]).style.display ='block';
 
             //Fade in
             var that = this;
