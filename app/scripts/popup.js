@@ -3,13 +3,13 @@ var popUp = {
         client_id: 'chrome_extension',
         client_secret: 'az97j24ho24cvh24xq671345ef5uop54',
     }),
-    server: "http://bookmarks.spope.fr",
+    server: 'http://bookmarks.spope.fr',
     user: null,
     bookmark: {},
 
     init: function(){
         this.viewManager.set(1);
-        _this = this;
+        var _this = this;
         //Get Oauth token
         this.auth.authorize(function(){
 
@@ -19,10 +19,10 @@ var popUp = {
                 callback: function(text){
                     _this.user = JSON.parse(text);
 
-                    document.querySelector('#hello').innerHTML = "Hi "+_this.user.username;
+                    document.querySelector('#hello').innerHTML = 'Hi '+_this.user.username;
                     _this.refreshCategories();
                 }
-            }
+            };
             _this.xhr(options);
 
         });
@@ -32,36 +32,36 @@ var popUp = {
         /////////////////////////////
 
         //Bind the previous btn
-        var list = document.querySelectorAll(".previous");
+        var list = document.querySelectorAll('.previous');
         for(var i=0; i<list.length; i++){
             list[i].addEventListener('click', function(e) {
                 _this.viewManager.set(_this.viewManager.getCurrentState() -1);
-            })
+            });
         }
 
         //logout button
-        document.querySelector("#btn-logout").addEventListener('click', function(e){
+        document.querySelector('#btn-logout').addEventListener('click', function(e){
             _this.auth.clearAccessToken();
             window.close();
         });
 
         //When hitting 'enter', submit the new bookmark
-        document.querySelector("#name").addEventListener('keydown', function(e){
+        document.querySelector('#name').addEventListener('keydown', function(e){
             if(e.keyCode == 13){
-                _this.bookmark.name = document.querySelector("#input-name").value;
+                _this.bookmark.name = document.querySelector('#input-name').value;
                 _this.addBookmark();
             }
         });
 
         //submit button
-        document.querySelector("#btn-add").addEventListener('click', function(e){
-            _this.bookmark.name = document.querySelector("#input-name").value;
+        document.querySelector('#btn-add').addEventListener('click', function(e){
+            _this.bookmark.name = document.querySelector('#input-name').value;
             _this.addBookmark();
         });
     },
 
     refreshCategories: function() {
-        _this = this;
+        var _this = this;
 
         var options = {
             url: _this.server+'/api/user/'+_this.user.id+'/categories',
@@ -73,8 +73,8 @@ var popUp = {
                 var parsed = JSON.parse(text);
                 var html = '';
                 for(i in parsed) {
-                    if(parsed[i].name == "__default"){
-                        parsed[i].name = "Favorite";
+                    if(parsed[i].name == '__default'){
+                        parsed[i].name = 'Favorite';
                     }
                     html += '<li class="category pointer" data-id="'+parsed[i].id+'">'+parsed[i].name+'</li>';
                 };
@@ -102,26 +102,26 @@ var popUp = {
     askName: function(){
         var _this = this;
         this.viewManager.set(3);
-        document.querySelector("#input-name").placeholder = this.bookmark.url.match(/:\/\/(.[^/]+)/)[1].replace('www.', '');
-        document.querySelector("#input-name").focus();
+        document.querySelector('#input-name').placeholder = this.bookmark.url.match(/:\/\/(.[^/]+)/)[1].replace('www.', '');
+        document.querySelector('#input-name').focus();
     },
 
     addBookmark: function(){
-        _this = this;
+        var _this = this;
         this.bookmark.bookmark_type_id = 1;
 
-        var params = "";
+        var params = '';
         for(var key in this.bookmark) {
-            params += key+"="+escape(this.bookmark[key])+"&";
+            params += key+'='+escape(this.bookmark[key])+'&';
         }
         params = params.substr(0, params.length-1);
 
         var options = {
-            method: "POST",
+            method: 'POST',
             url: _this.server+'/api/user/'+_this.user.id+'/bookmark',
             body: params,
             error: "Can't add this bookmark",
-            requestHeader: "application/x-www-form-urlencoded",
+            requestHeader: 'application/x-www-form-urlencoded',
             callback: function(text){
                 var parsed = JSON.parse(text);
 
@@ -137,9 +137,9 @@ var popUp = {
 
         var _this = this;
 
-        options.body = options.body || "";
-        options.method = options.method || "GET";
-        options.requestHeader = options.requestHeader || "application/json";
+        options.body = options.body || '';
+        options.method = options.method || 'GET';
+        options.requestHeader = options.requestHeader || 'application/json';
         if(!options.url)throw Error('XHR need a URL');
 
         var xhr = new XMLHttpRequest();
@@ -152,7 +152,7 @@ var popUp = {
                     }
                     return;
                 } else {
-                    document.querySelector("#error").innerHTML = options.error ||"Error on xhr";
+                    document.querySelector('#error').innerHTML = options.error ||'Error on xhr';
                 }
             }
         };
@@ -164,10 +164,10 @@ var popUp = {
 
     viewManager: {
         states: {
-            1: "#loader",
-            2: "#categories",
-            3: "#name",
-            4: "#finished"
+            1: '#loader',
+            2: '#categories',
+            3: '#name',
+            4: '#finished'
         },
         currentState: 1,
         getCurrentState: function(){
@@ -175,11 +175,11 @@ var popUp = {
         },
         set: function(state){
             for(var i in this.states){
-                document.querySelector(this.states[i]).style.display = "none";
+                document.querySelector(this.states[i]).style.display = 'none';
                 document.querySelector(this.states[i]).style.opacity = 0;
             }
 
-            document.querySelector(this.states[state]).style.display = "block";
+            document.querySelector(this.states[state]).style.display ='"block';
 
             //Fade in
             var that = this;

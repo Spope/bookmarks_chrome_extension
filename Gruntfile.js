@@ -27,10 +27,10 @@ module.exports = function (grunt) {
         less: {
             development: {
                 options: {
-                    //paths: ["../client/public/less"]
+                    //paths: ['../client/public/less']
                 },
                 files: {
-                    "<%= yeoman.app %>/styles/main.css" : "<%= yeoman.app %>/less/main.less"
+                    '<%= yeoman.app %>/styles/main.css' : '<%= yeoman.app %>/less/main.less'
                 }
             }
         },
@@ -40,8 +40,8 @@ module.exports = function (grunt) {
                 spawn: false
             },
             less: {
-                files: "<%= yeoman.app %>/less/*.less",
-                tasks: ["less"],
+                files: '<%= yeoman.app %>/less/*.less',
+                tasks: ['less'],
                 options: {
                     interrupt: true
                 }
