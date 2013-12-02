@@ -91,6 +91,7 @@ var popUp = {
     },
 
     clicked: function(e) {
+        var _this = popUp;
         chrome.tabs.query({'active': true}, function(tabs){
             _this.bookmark.url = tabs[0].url;
             _this.bookmark.category_id = e.target.dataset.id;
