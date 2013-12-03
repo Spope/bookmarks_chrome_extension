@@ -1,9 +1,9 @@
 var popUp = {
     auth: new OAuth2('bookmarks', {
-        client_id: 'chrome_extension',
-        client_secret: 'az97j24ho24cvh24xq671345ef5uop54',
+        client_id: config.clientId,
+        client_secret: config.clientSecret,
     }),
-    server: 'http://bookmarks.spope.fr',
+    server: config.server,
     user: null,
     bookmark: {},
 

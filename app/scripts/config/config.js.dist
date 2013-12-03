@@ -1,0 +1,5 @@
+var config = {
+    clientId: 'CLIENT ID',
+    clientSecret: 'CLIENT SECRET',
+    server: 'CLIENT SERVER'
+};
