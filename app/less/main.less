@@ -24,7 +24,7 @@
 }
 
 .category{
-    border-top: 1px solid #e9e9e9;
+    /*border-top: 1px solid #e9e9e9;*/
 }
 
 .category a{
@@ -41,7 +41,6 @@
 }
 #name{
     #category-name{
-        padding:3px 3px 3px 10px;
     }
 
     #input-name{
@@ -55,10 +54,36 @@
 
     .previous{
         display:block;
-        padding:3px 3px 3px 10px;
+        padding:3px 3px 3px 30px;
+        background: url("../images/arrow-left.png") no-repeat;
+        background-position:13px center;
+
         &:hover{
+            background: url("../images/arrow-left-white.png") no-repeat;
+            background-position:13px center;
             color:white;
-            background:#4281f4;
+            background-color:#4281f4;
         }
     }
+}
+
+.folder a{
+    display:block;
+    padding:3px 3px 3px 30px;
+    background:url("../images/folder.png") no-repeat 10px 2px;
+
+    &:hover{
+        color:white;
+        background-color: #4281f4;
+    }
+}
+
+.parent a{
+    display:block;
+    padding:3px 3px 3px 30px;
+    background:url("../images/openfolder-icon.png") no-repeat 10px center;
+}
+
+#error{
+    color:red;
 }

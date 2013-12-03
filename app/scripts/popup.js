@@ -7,9 +7,10 @@ var popUp = {
     user: null,
     categories:{},
     bookmark: {},
+    folders:[],
 
     init: function(){
-        this.viewManager.set(1);
+        this.viewManager.set('loader');
         var _this = this;
         //Get Oauth token
         this.auth.authorize(function(){
@@ -36,7 +37,7 @@ var popUp = {
         var list = document.querySelectorAll('.previous');
         for(var i=0; i<list.length; i++){
             list[i].addEventListener('click', function(e) {
-                _this.viewManager.set(_this.viewManager.getCurrentState() -1);
+                _this.viewManager.set('categories');
             });
         }
 
@@ -68,7 +69,7 @@ var popUp = {
             url: _this.server+'/api/user/'+_this.user.id+'/categories',
             error: "Can't retrieve your categories",
             callback: function(text){
-                _this.viewManager.set(2);
+                _this.viewManager.set('categories');
 
                 // Great success: parse response with JSON
                 var parsed = JSON.parse(text);
@@ -98,22 +99,85 @@ var popUp = {
             _this.bookmark.url = tabs[0].url;
             _this.bookmark.category_id = e.target.dataset.id;
 
+            _this.getFolder(e.target.dataset.id);
+
             _this.askName();
         });
     },
 
+    getFolder: function(idCategory, idParent){
+        var getParent = idParent || "";
+        var _this = this;
+        var options = {
+            url: _this.server+'/api/user/'+_this.user.id+'/category/'+idCategory+'/folder/'+getParent,
+            error: "Can't retrieve the folders",
+            callback: function(text){
+                // Great success: parse response with JSON
+                var parsed = JSON.parse(text);
+                var previousName = "";
+                var previousId = "";
+                if(!_this.folders[idCategory]){
+                    _this.folders[idCategory] = {};
+                }
+                if(!idParent){
+                    idParent = 'root';
+                    previousName = 'Root';
+                }else{
+                    for(var i in _this.folders[idCategory]){
+                        var previous = _this.folders[idCategory][i].filter(function(f){
+                            if(f.id == idParent){
+                                previousId = i == 'root' ? '': i;
+                            }
+                            return f.id == idParent;
+                        })[0];
+                        if(previous){
+                            previousName = previous.name;
+                        }
+                    }
+                }
+
+                _this.folders[idCategory][idParent] = parsed;
+                var html = '';
+                if(idParent && idParent != 'root'){
+                    html = '<li class="folder parent pointer"><a data-id="'+previousId+'">'+previousName+'</a></li>';
+                }
+                for(i in _this.folders[idCategory][idParent]) {
+                    if(_this.folders[idCategory][idParent][i].name == '__default'){
+                        _this.folders[idCategory][idParent][i].name = 'Favorite';
+                    }
+                    html += '<li class="folder pointer"><a data-id="'+_this.folders[idCategory][idParent][i].id+'">'+_this.folders[idCategory][idParent][i].name+'</a></li>';
+                };
+                document.querySelector('#folders').innerHTML = html;
+
+                var list = document.querySelectorAll('.folder');
+
+                for(var i=0; i< list.length; i++){
+                    list[i].addEventListener('click', _this.folderClicked);
+                }
+            }
+        }
+        _this.xhr(options);
+    },
+
+    folderClicked: function(e){
+        var _this = popUp;
+        _this.bookmark.parent = e.target.dataset.id;
+
+        _this.getFolder(_this.bookmark.category_id, e.target.dataset.id);
+
+        document.querySelector('#input-name').focus();
+    },
+
     askName: function(){
         var _this = this;
-        this.viewManager.set(3);
+        this.viewManager.set('name');
         document.querySelector('#input-name').placeholder = this.bookmark.url.match(/:\/\/(.[^/]+)/)[1].replace('www.', '');
         document.querySelector('#input-name').focus();
         var category = _this.categories.filter(function(c){
-            console.log(c.id+" == "+_this.bookmark.category_id);
             return c.id == _this.bookmark.category_id;
         })[0];
-        console.log(_this.categories);
 
-        document.querySelector('#category-name').innerHTML = "<strong>Category : </strong>"+category.name;
+        document.querySelector('#category-name').innerHTML = "<strong>"+category.name+"</strong>";
     },
 
     addBookmark: function(){
@@ -136,7 +200,7 @@ var popUp = {
                 var parsed = JSON.parse(text);
 
                 if(parsed.id) {
-                    _this.viewManager.set(4);
+                    _this.viewManager.set('finish');
                 }
             }
         }
@@ -163,6 +227,7 @@ var popUp = {
                     return;
                 } else {
                     document.querySelector('#error').innerHTML = options.error ||'Error on xhr';
+                    _this.viewManager.set('error');
                 }
             }
         };
@@ -174,10 +239,11 @@ var popUp = {
 
     viewManager: {
         states: {
-            1: '#loader',
-            2: '#categories',
-            3: '#name',
-            4: '#finished'
+            loader         : '#loader',
+            categories     : '#categories',
+            name           : '#name',
+            finish         : '#finished',
+            error          : '#error'
         },
         currentState: 1,
         getCurrentState: function(){

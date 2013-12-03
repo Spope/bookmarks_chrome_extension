@@ -12,11 +12,12 @@
                 <a id="btn-logout" class="pointer">Logout</a>
             </div>
 
-            <p id="loader">Loading...</p>
+            <div id="loader">Loading...</div>
 
             <div id="categories">
                 <h2 class="title">Pick a category</h2>
                 <div class="clr"></div>
+                <hr />
                 <ul id="categories-list">
                 </ul>
             </div>
@@ -24,11 +25,16 @@
             <div id="name">
                 <h2 class="title">Name (optional)</h2>
                 <div class="clr"></div>
-                <p id="category-name"></p>
+                <hr />
+                <a id="category-name" class="previous pointer"></a>
+                <!--<a class="previous pointer">Change category</a>-->
+                <hr />
+
                 <input type="text" id="input-name" />
                 <button type="button" id="btn-add">Ok</button>
                 <hr />
-                <a class="previous pointer">Previous</a>
+                
+                <ul id="folders"></ul>
             </div>
 
             <div id="finished">
