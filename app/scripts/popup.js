@@ -5,6 +5,7 @@ var popUp = {
     }),
     server: config.server,
     user: null,
+    categories:{},
     bookmark: {},
 
     init: function(){
@@ -71,12 +72,13 @@ var popUp = {
 
                 // Great success: parse response with JSON
                 var parsed = JSON.parse(text);
+                _this.categories = parsed;
                 var html = '';
-                for(i in parsed) {
-                    if(parsed[i].name == '__default'){
-                        parsed[i].name = 'Favorite';
+                for(i in _this.categories) {
+                    if(_this.categories[i].name == '__default'){
+                        _this.categories[i].name = 'Favorite';
                     }
-                    html += '<li class="category pointer" data-id="'+parsed[i].id+'">'+parsed[i].name+'</li>';
+                    html += '<li class="category pointer"><a data-id="'+_this.categories[i].id+'">'+_this.categories[i].name+'</a></li>';
                 };
                 document.querySelector('#categories-list').innerHTML = html;
 
@@ -105,6 +107,13 @@ var popUp = {
         this.viewManager.set(3);
         document.querySelector('#input-name').placeholder = this.bookmark.url.match(/:\/\/(.[^/]+)/)[1].replace('www.', '');
         document.querySelector('#input-name').focus();
+        var category = _this.categories.filter(function(c){
+            console.log(c.id+" == "+_this.bookmark.category_id);
+            return c.id == _this.bookmark.category_id;
+        })[0];
+        console.log(_this.categories);
+
+        document.querySelector('#category-name').innerHTML = "<strong>Category : </strong>"+category.name;
     },
 
     addBookmark: function(){

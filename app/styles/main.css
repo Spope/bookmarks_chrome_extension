@@ -12,7 +12,7 @@
 }
 body {
   font-size: 12px;
-  background-color: #f7f7f7;
+  background-color: white;
   overflow-y: scroll;
   overflow-x: hidden;
   color: #404040;
@@ -107,7 +107,7 @@ small {
   font-weight: 300;
 }
 .dots {
-  background: transparent url("../img/dots.gif");
+  background: transparent url("../images/dots.gif");
 }
 hr {
   margin: 0;
@@ -115,7 +115,7 @@ hr {
   display: block;
   border: none;
   height: 1px;
-  background: #ffffff url("../img/dots.gif") top left repeat-x;
+  background: #e9e9e9;
 }
 input[type="text"],
 input[type="password"],
@@ -131,7 +131,7 @@ button {
   -moz-transition: all 0.1s ease-out;
   -o-transition: all 0.1s ease-out;
   transition: all 0.1s ease-out;
-  padding: 7px;
+  padding: 7px 7px 6px 7px ;
   background: none;
   background-color: #404040;
   border: 0;
@@ -158,14 +158,50 @@ button {
 }
 #content {
   width: 260px;
+  background: white;
+}
+.title {
+  font-size: 1.3em;
+  float: left;
+  padding: 5px 5px 5px 10px;
 }
 #user {
-  font-size: 0.9em;
-  text-align: right;
+  font-size: 0.8em;
+  float: right;
+  padding: 5px 10px;
 }
 #categories-list {
   list-style: none;
 }
-#input-name {
+.category {
+  border-top: 1px solid #e9e9e9;
+}
+.category a {
+  display: block;
+  padding: 3px 3px 3px 10px;
+  background: url("../images/arrow.png") no-repeat right;
+  background-position: 97% center;
+}
+.category a:hover {
+  color: white;
+  background: url("../images/arrow-white.png") no-repeat #4281f4;
+  background-position: 90% center;
+}
+#name #category-name {
+  padding: 3px 3px 3px 10px;
+}
+#name #input-name {
   float: left;
+  margin-left: 10px;
+}
+#name hr {
+  margin: 5px 0 5px 0;
+}
+#name .previous {
+  display: block;
+  padding: 3px 3px 3px 10px;
+}
+#name .previous:hover {
+  color: white;
+  background: #4281f4;
 }

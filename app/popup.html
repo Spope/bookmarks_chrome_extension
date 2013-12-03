@@ -2,6 +2,7 @@
 <html>
     <head>
         <link href="styles/main.css" rel="stylesheet">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700' rel='stylesheet' type='text/css'>
         <script src="/oauth2/oauth2.js"></script>
     </head>
     <body>
@@ -14,15 +15,19 @@
             <p id="loader">Loading...</p>
 
             <div id="categories">
-                <h2>Pick a category</h2>
+                <h2 class="title">Pick a category</h2>
+                <div class="clr"></div>
                 <ul id="categories-list">
                 </ul>
             </div>
 
             <div id="name">
-                <h2>Name (optional)</h2>
+                <h2 class="title">Name (optional)</h2>
+                <div class="clr"></div>
+                <p id="category-name"></p>
                 <input type="text" id="input-name" />
                 <button type="button" id="btn-add">Ok</button>
+                <hr />
                 <a class="previous pointer">Previous</a>
             </div>
 
