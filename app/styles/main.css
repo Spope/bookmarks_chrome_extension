@@ -143,13 +143,6 @@ button:hover {
   background-color: #5a5a5a;
   border: solid 1px #1a1a1a;
 }
-a,
-button {
-  -webkit-transition: all 0.15s ease-out;
-  -moz-transition: all 0.15s ease-out;
-  -o-transition: all 0.15s ease-out;
-  transition: all 0.15s ease-out;
-}
 .pointer {
   cursor: pointer;
 }
